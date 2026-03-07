@@ -1,14 +1,14 @@
-# Use Ubuntu base
 FROM ubuntu:22.04
 
-# Install FFmpeg and PHP CLI
-RUN apt-get update && apt-get install -y ffmpeg php-cli
+# Avoid interactive prompts during apt install
+ENV DEBIAN_FRONTEND=noninteractive
 
-# Set working directory
+RUN apt-get update && \
+    apt-get install -y ffmpeg php-cli tzdata && \
+    rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
-# Copy all repo files
 COPY . .
 
-# Run the worker
 CMD ["php", "worker.php"]
